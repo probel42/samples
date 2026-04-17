@@ -405,7 +405,7 @@ class StepsCanvas {
 	}
 
 	getFreePlace() {
-		return this.stepsStack.map(step => step.place.crossesTo).flatMap(cross => cross.to)
+		return this.stepsStack.map(step => step.place.crossesTo).flatMap(crosses => crosses.map(c => c.to))
 			.find(place => this.stepsStack.every(step => step.place !== place));
 	}
 
