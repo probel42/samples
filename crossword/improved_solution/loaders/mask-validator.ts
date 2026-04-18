@@ -17,8 +17,12 @@ export class MaskValidator {
 			console.warn('Маска должна быть прямоугольником.');
 			return false;
 		}
+		if (mask.every(line => line.split('').every(char => char === '*'))) {
+			console.warn('В маске должны быть места для размещения.');
+			return false;
+		}
 		// ещё одна небольшая проверка на отсутствие изолированных одиночных клеток.
-		if (mask.some((row, y) => row.split('').some((val, x) => val !== '*' &&
+		if (mask.some((line, y) => line.split('').some((char, x) => char !== '*' &&
 			[mask[y - 1]?.[x], mask[y + 1]?.[x], mask[y]?.[x - 1], mask[y]?.[x + 1]].every(n => (n ?? '*') === '*')))) {
 			console.warn('Маска не должна содержать изолированные одиночные клетки.');
 			return false;
