@@ -23,11 +23,14 @@ export class BackTrackingSolver extends Solver {
 		// класс для записи результата
 		const placementSolution = new PlacementSolution(context.height, context.width, context.places.length);
 
-		// начнём с мест с самым небольшим доменом todo
+		// начнём с места с самым небольшим доменом todo
 		const firstPlace = domains.placeDomains.keys().next().value;
 
-		for (const word of domains.placeDomains.get(firstPlace)) {
-			const result = this.digIn(firstPlace, word, context, domains, placementSolution);
+		// домен места
+		const domain = domains.placeDomains.get(firstPlace)!;
+
+		for (const nextWord of domain) {
+			const result = this.digIn(firstPlace, nextWord, context, domains, placementSolution);
 			if (result === 'ok') {
 				return placementSolution.toString();
 			}
@@ -59,7 +62,7 @@ export class BackTrackingSolver extends Solver {
 			}
 
 			// домен по месту
-			const domain = domains.placeDomains.get(nextPlace);
+			const domain = domains.placeDomains.get(nextPlace)!;
 
 			for (const nextWord of domain) {
 				if (placementSolution.checkWordAvailable(nextPlace, nextWord) && placementSolution.checkCompatibility(nextPlace, nextWord)) {

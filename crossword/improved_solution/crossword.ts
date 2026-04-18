@@ -3,8 +3,8 @@ import { DictLoader } from './loaders/dict-loader.ts';
 import { InputReader } from './loaders/input-reader.ts';
 import { MaskValidator } from './loaders/mask-validator.ts';
 import { ContextInitializer } from './loaders/context-initializer.ts';
-import { BackTrackingSolver } from './logic/back-tracking-solver.ts';
-import type { Solver } from './logic/solver.ts';
+import { BackTrackingSolver } from './logic/solvers/back-tracking-solver.ts';
+import type { Solver } from './logic/solvers/solver.ts';
 
 const DICT_PATH = '../words.txt';
 
@@ -36,7 +36,7 @@ async function main() {
 	}
 }
 
-main().catch(ignored => {
-	console.error();
+main().catch(error => {
+	console.error(error);
 	process.exit(1);
 });

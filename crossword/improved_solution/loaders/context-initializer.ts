@@ -21,7 +21,7 @@ export class ContextInitializer {
 
 		// логика для горизонтального и вертикального сканирования идентична, поэтому DRY
 		let isWordStarted: boolean, wordLength: number, wordStartRow: number, wordStartCol: number;
-		let processCell = (row, col, isVertical) => {
+		let processCell = (row: number, col: number, isVertical: boolean) => {
 			let isFieldAvailable = row < height && col < width && mask[row][col] !== '*';
 			if (isFieldAvailable) {
 				wordLength++;
@@ -64,7 +64,7 @@ export class ContextInitializer {
 	private static addCrosses(places: WordPlace[], height: number) {
 		console.log('Создание пересечений...');
 
-		const crossMatrix = []; // матрица для выявления пересечений
+		const crossMatrix: { place: WordPlace, pos: number }[][] = []; // матрица для выявления пересечений
 		for (let row = 0; row < height; row++) {
 			crossMatrix[row] = [];
 		}

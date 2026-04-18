@@ -36,7 +36,7 @@ export abstract class Solver {
 			if (!lengthMap.has(word.length)) {
 				lengthMap.set(word.length, []);
 			}
-			lengthMap.get(word.length).push(word);
+			lengthMap.get(word.length)?.push(word);
 		});
 
 		// домены мест

@@ -26,7 +26,7 @@ export class PlacementSolution {
 	}
 
 	// проверяет занято ли слово
-	checkWordAvailable(place: WordPlace, word: string): boolean {
+	checkWordAvailable(word: string): boolean {
 		return !this.words.has(word);
 	}
 
@@ -38,36 +38,21 @@ export class PlacementSolution {
 		});
 	}
 
-	// установка слова (предполагается что все необходимые проверки сделаны)
-	applyWord(place: WordPlace, word: string) {
+	// размещение слова (предполагается что все необходимые проверки сделаны)
+	attachPlacement(place: WordPlace, word: string) {
 		this.placements.set(place, word);
 		this.words.add(word);
 	}
 
 	// удаление слова
-	removeWord(place: WordPlace, word: string) {
+	detachPlacement(place: WordPlace) {
+		this.words.delete(this.placements.get(place));
 		this.placements.delete(place);
-		this.words.delete(word);
-	}
-
-	// найти свободное место (из достижимых)
-	getFreeReachablePlace(): WordPlace | undefined {
-		for (const place of this.placements.keys()) {
-			const freePlace = place.crossesTo.find(cross => !this.placements.has(cross.to));
-			if (freePlace) {
-				return freePlace;
-			}
-		}
-		return undefined;
 	}
 
 	// проверка готовности
 	checkReadiness(): boolean {
-		let placementsCount = 0;
-		for (const _ of this.placements.keys()) {
-			placementsCount++;
-		}
-		return placementsCount === this.placesNumber;
+		return this.placements.size === this.placesNumber;
 	}
 
 	toString(): string {
@@ -79,8 +64,8 @@ export class PlacementSolution {
 				canvas[row][col] = '*';
 			}
 		}
-		// размещаем в нём слова
-		this.placements.forEach((word, place) => {
+		// размещаем на нём слова
+		for (const [place, word] of this.placements) {
 			for (let pos = 0; pos < place.length; pos++) {
 				if (place.isVertical) {
 					canvas[place.row + pos][place.col] = word[pos];
@@ -88,7 +73,7 @@ export class PlacementSolution {
 					canvas[place.row][place.col + pos] = word[pos];
 				}
 			}
-		});
+		}
 		return canvas.map(row => row.join('')).join('\n');
 	}
 }
