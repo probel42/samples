@@ -6,7 +6,7 @@ import { ContextInitializer } from './loaders/context-initializer.ts';
 import { BackTrackingSolver } from './logic/solvers/back-tracking-solver.ts';
 import type { Solver } from './logic/solvers/solver.ts';
 
-const DICT_PATH = '../words.txt';
+const DICT_PATH = 'words.txt';
 
 // выключим логирование
 console.log = (ignored: string) => {};
