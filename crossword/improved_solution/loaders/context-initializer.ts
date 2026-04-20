@@ -69,12 +69,12 @@ export class ContextInitializer {
 			crossMatrix[row] = [];
 		}
 
-		places.filter(place => !place.isVertical).forEach(place => {
+		for (const place of places.filter(place => !place.isVertical)) {
 			for (let pos = 0; pos < place.length; pos++) {
 				crossMatrix[place.row][place.col + pos] = { place: place, pos: pos };
 			}
-		});
-		places.filter(place => place.isVertical).forEach(place => {
+		}
+		for (const place of places.filter(place => place.isVertical)) {
 			for (let pos = 0; pos < place.length; pos++) {
 				let crossingPlace = crossMatrix[place.row + pos][place.col];
 				if (crossingPlace) {
@@ -86,6 +86,6 @@ export class ContextInitializer {
 					crossingPlace.place.crossesFrom.push(toAdjacent);
 				}
 			}
-		});
+		}
 	}
 }
