@@ -11,17 +11,14 @@ export class BackTrackingSolver extends Solver {
 	solve(context: DataContext): string | undefined {
 		console.log('Начало алгоритма...');
 
-		// подготовка доменов
-		const domainManager = new DomainsManager(context.domain);
-		domainManager.init(context.places);
-		if (context.places.some(place => domainManager.getPlaceDomainSize(place) === 0)) {
-			console.warn('Решение не найдено.');
-			return undefined;
-		}
-
 		// класс для записи результата
 		const placementSolution = new PlacementSolution(context.height, context.width, context.places.length);
 
+		// подготовка доменов
+		const domainManager = new DomainsManager(context.domain);
+		domainManager.init(context.places);
+
+		// обход
 		const result = this.digIn(context, domainManager, placementSolution);
 		if (result === 'ok') {
 			return placementSolution.toString();
@@ -31,24 +28,26 @@ export class BackTrackingSolver extends Solver {
 
 	// перебор (рекурсивный)
 	private digIn(context: DataContext, domainManager: DomainsManager, placementSolution: PlacementSolution): string {
-		const place = this.getNextPlace(context, domainManager, placementSolution);
-		if (place) {
-			for (const word of domainManager.getPlaceDomain(place)) {
-				if (!placementSolution.checkWordAvailable(word) ||
-					!placementSolution.checkCompatibility(place, word)) {
-					continue;
+		if (context.places.every(place => domainManager.getPlaceDomainSize(place) > 0)) {
+			const place = this.getNextPlace(context, domainManager, placementSolution);
+			if (place) {
+				for (const word of domainManager.getPlaceDomain(place)) {
+					if (!placementSolution.checkWordAvailable(word) ||
+						!placementSolution.checkCompatibility(place, word)) {
+						continue;
+					}
+					placementSolution.attachPlacement(place, word);
+					if (placementSolution.checkReadiness()) {
+						return 'ok';
+					}
+					domainManager.attachPlacement(place, word);
+					const digInResult = this.digIn(context, domainManager, placementSolution);
+					if (digInResult === 'ok') {
+						return digInResult;
+					}
+					domainManager.detachPlacement(place);
+					placementSolution.detachPlacement(place);
 				}
-				placementSolution.attachPlacement(place, word);
-				if (placementSolution.checkReadiness()) {
-					return 'ok';
-				}
-				domainManager.attachPlacement(place, word);
-				const digInResult = this.digIn(context, domainManager, placementSolution);
-				if (digInResult === 'ok') {
-					return digInResult;
-				}
-				domainManager.detachPlacement(place);
-				placementSolution.detachPlacement(place);
 			}
 		}
 		return 'end';

@@ -75,7 +75,7 @@ export class DomainsManager {
 			lengthDomains.set(length, builder.build());
 		}
 		for (const place of places) {
-			this.placeToDomain.set(place, lengthDomains.get(place.length));
+			this.placeToDomain.set(place, lengthDomains.get(place.length) ?? IntDomain.EMPTY);
 		}
 	}
 
