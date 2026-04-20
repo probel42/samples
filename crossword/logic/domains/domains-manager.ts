@@ -12,7 +12,7 @@ type PlaceToDomain<T> = Map<WordPlace, T>;
 export class DomainsManager {
 	private readonly fullDomain: string[];
 
-	// домены по длине, букве, позиции (length, letter, position) (тройная мапа)
+	// домены по длине, букве, позиции (length, char, position) (тройная мапа)
 	private lcp: LCP<IntDomain> = new Map();
 
 	// текущий домен на месте
