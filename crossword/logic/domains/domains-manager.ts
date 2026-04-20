@@ -97,7 +97,7 @@ export class DomainsManager {
 		this.places.add(place);
 		for (const cross of place.crossesTo.filter(cross => !this.places.has(cross.to))) {
 			const currentDomain = this.placeToDomain.get(cross.to);
-			const lcpDomain = this.lcp.get(cross.to.length)?.get(word[cross.fromWordPos])?.get(cross.toWordPos) ?? IntDomain.EMTPY;
+			const lcpDomain = this.lcp.get(cross.to.length)?.get(word[cross.fromWordPos])?.get(cross.toWordPos) ?? IntDomain.EMPTY;
 			this.deletedDomain.set(cross, currentDomain.difference(lcpDomain));
 			this.placeToDomain.set(cross.to, currentDomain.intersect(lcpDomain));
 		}
