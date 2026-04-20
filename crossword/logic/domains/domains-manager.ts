@@ -56,7 +56,7 @@ export class DomainsManager {
 			}
 			lengthDomainsBuilders.get(word.length)!.push(i);
 		}
-		// копируем в готовую мапу с построением из билдеров
+		// копируем в финальную мапу с построением из билдеров
 		for (const [length, lcpBuilders2] of lcpBuilders) {
 			this.lcp.set(length, new Map());
 			const lcp2 = this.lcp.get(length)!;
